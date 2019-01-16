@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour
     public Camera RearCam;
     public Camera FrontCam;
     bool isDriverCam = true;
+    bool isSandStorm = true;
+    GameObject SandStorm;
     GameObject LeftMidWheel;
     GameObject RightMidWheel;
 
@@ -17,9 +19,20 @@ public class Movement : MonoBehaviour
     GameObject RightFrontWheel;
     GameObject LeftBackWheel;
     GameObject RightBackWheel;
+    LimeLightData LL;
 
     private Rigidbody rb;
 
+    float minForce = 0.05f;
+    float minForwardForce = 0.375f;
+    float searchForce = 0.75f;
+    float distanceRange = 1f;
+
+    void ToggleSandStorm()
+    {
+        isSandStorm = !isSandStorm;
+        SandStorm.GetComponent<MeshRenderer>().enabled = isSandStorm;
+    }
     void ToggleCam()
     {
         isDriverCam = !isDriverCam;
@@ -38,8 +51,9 @@ public class Movement : MonoBehaviour
     }
     void Start()
     {
-        ToggleCam();
+        LL = GetComponent<LimeLightData>();
         rb = GetComponent<Rigidbody>();
+        SandStorm = GameObject.Find("SandStorm");
         RightMidWheel = transform.Find("RightMid").gameObject;
         LeftMidWheel = transform.Find("LeftMid").gameObject;
 
@@ -47,8 +61,10 @@ public class Movement : MonoBehaviour
         LeftFrontWheel = transform.Find("LeftFront").gameObject;
         RightBackWheel = transform.Find("RightBack").gameObject;
         LeftBackWheel = transform.Find("LeftBack").gameObject;
+        ToggleCam();
+        ToggleSandStorm();
     }
-    void MoveLeftSide(float vspeed)
+    void setMotorSpeedLeft(float vspeed)
     {
         //transform.Rotate(0.0f, vspeed, 0.0f);
         //rb.AddForce(transform.forward * vspeed * motorPower);
@@ -69,7 +85,7 @@ public class Movement : MonoBehaviour
         }
 
     }
-    void MoveRightSide(float vspeed)
+    void setMotorSpeedRight(float vspeed)
     {
         //transform.Rotate(0.0f, -vspeed, 0.0f);
         vspeed = vspeed / 3f;
@@ -89,24 +105,148 @@ public class Movement : MonoBehaviour
     }
     void JoystickInputs()
     {
-        if (Input.GetButtonDown("XBOX_LEFT_BUMPER") || Input.GetButtonDown("XBOX_RIGHT_BUMPER"))
+        if (Input.GetButtonDown("XBOX_LEFT_BUMPER"))
+        {
+            ToggleSandStorm();
+        }
+        if (Input.GetButtonDown("XBOX_RIGHT_BUMPER"))
         {
             ToggleCam();
         }
+        if (Input.GetButton("XBOX_X"))
+        {
+            seekPositioning();
+            //seekTargetRange();
+            //seekTarget();
+        }
+        else
+        {
+            float LeftVerticalJoy = Input.GetAxis("Left_Vertical_Joystick");
+            float RightVerticalJoy = Input.GetAxis("Right_Vertical_Joystick");
+
+            if (Input.GetButton("XBOX_B"))
+            {
+                setMotorSpeedLeft(LeftVerticalJoy);
+                setMotorSpeedRight(LeftVerticalJoy);
+            }
+            else
+            {
+                setMotorSpeedLeft(LeftVerticalJoy);
+                setMotorSpeedRight(RightVerticalJoy);
+            }
+        }
+
+    }
+    float EstimateDistance()
+    {
+        float h1 = transform.position.y;
+        float h2 = FrontCam.GetComponent<Example>().CurrentTarget.transform.position.y;
+        float a1 = Mathf.Abs(360 - transform.localEulerAngles.x);
+        float a2 = (float)LL.tsSkewRotation;
+        float d = (h2 - h1) / (float)(Mathf.Tan(Mathf.Deg2Rad * (a1 + a2)));
+        return d;
+    }
+
+    void seekPositioning()
+    {
+        float KpDistance = -0.3f;
+        float steering_adjust = 0.0f;
+        float distance_adjust = 0.0f;
+        if (LL.tvValidTarget == 0.0)
+        {
+            // We don't see the target, seek for the target by spinning in place at a safe speed.
+            if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") > 0)
+                steering_adjust = -searchForce - minForce;
+            else if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") < 0)
+                steering_adjust = searchForce + minForce;
+            print("Seeking");
+        }
+        else
+        {
+            // We do see the target, execute aiming code
+            //double heading_error = LL.txOffsetX;
+            //steering_adjust = 0.3 * LL.txOffsetX;
+            float heading_error = (float)LL.txOffsetX;
+            float distance_error = distanceRange - EstimateDistance();
+            minForwardForce = Mathf.Abs(minForwardForce);
+            if (distance_error > 0)
+            {
+                minForwardForce = -Mathf.Abs(minForwardForce);
+            }
+            steering_adjust = 0.0f;
+            if (LL.txOffsetX > 1.0)
+            {
+                steering_adjust = 0.1f * (float)heading_error - (float)minForce;
+            }
+            else if (LL.txOffsetX < 1.0)
+            {
+                steering_adjust = 0.1f * (float)heading_error + (float)minForce;
+            }
+            distance_adjust = KpDistance * distance_error + minForwardForce;
+            print("Adjusting");
+        }
+
+        setMotorSpeedLeft(-(float)steering_adjust+ distance_adjust);
+        setMotorSpeedRight((float)steering_adjust+ distance_adjust);
+    }
+    void seekTargetRange()
+    {
+        if (LL.tvValidTarget == 0.0)
+            return;
+        float KpDistance = -0.3f;  // Proportional control constant for distance
+        float distance_error = distanceRange - EstimateDistance();
+        minForwardForce = Mathf.Abs(minForwardForce);
+        if (distance_error > 0)
+        {
+            minForwardForce = -Mathf.Abs(minForwardForce);
+        }
+        float driving_adjust = KpDistance * distance_error+ minForwardForce;
+        print(driving_adjust);
+        setMotorSpeedLeft(driving_adjust);
+        setMotorSpeedRight(driving_adjust);
+    }
+    void seekTarget()
+    {
+        double steering_adjust = 0.0f;
+        if (LL.tvValidTarget == 0.0)
+        {
+            // We don't see the target, seek for the target by spinning in place at a safe speed.
+            if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") > 0)
+                steering_adjust = -searchForce - minForce;
+            else if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") < 0)
+                steering_adjust = searchForce + minForce;
+            print("Seeking");
+        }
+        else
+        {
+            // We do see the target, execute aiming code
+            //double heading_error = LL.txOffsetX;
+            //steering_adjust = 0.3 * LL.txOffsetX;
+            float heading_error = (float)LL.txOffsetX;
+            steering_adjust = 0.0f;
+            if (LL.txOffsetX > 1.0)
+            {
+                steering_adjust = 0.1 * heading_error - minForce;
+            }
+            else if (LL.txOffsetX < 1.0)
+            {
+                steering_adjust = 0.1 * heading_error + minForce;
+            }
+            print("Adjusting");
+        }
+
+        setMotorSpeedLeft(-(float)steering_adjust);
+        setMotorSpeedRight((float)steering_adjust);
     }
     // Update is called once per frame
     void Update()
     {
         float moveLeftVertical = Input.GetAxis("WSVertical");
         float moveRightVertical = Input.GetAxis("ArrowsVertical");
-        float LeftVerticalJoy = Input.GetAxis("Left_Vertical_Joystick");
-        float RightVerticalJoy = Input.GetAxis("Right_Vertical_Joystick");
 
-        MoveLeftSide(moveLeftVertical);
-        MoveRightSide(moveRightVertical);
+        setMotorSpeedLeft(moveLeftVertical);
+        setMotorSpeedRight(moveRightVertical);
 
-        MoveLeftSide(LeftVerticalJoy);
-        MoveRightSide(RightVerticalJoy);
         JoystickInputs();
     }
 }

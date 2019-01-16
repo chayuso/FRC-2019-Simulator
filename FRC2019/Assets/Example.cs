@@ -5,56 +5,26 @@ using UnityEngine;
 public class Example : MonoBehaviour
 {
     // Detects manually if obj is being seen by the main camera
+    LimeLightData LL;
     BoxCollider CameraView;
-    public GameObject[] VisionTargets;
+    GameObject[] VisionTargets;
     public List<GameObject> visionMemory;
-    public float range = 5f;
+    public GameObject CurrentTarget;
     private void Start()
     {
         if (!CameraView)
         {
             CameraView = GetComponent<BoxCollider>();
         }
+        LL = transform.parent.GetComponent<LimeLightData>();
         VisionTargets = GameObject.FindGameObjectsWithTag("VisionTarget");
         HideAllVisionTargets();
     }
     private void Update()
     {
         showClosestValidTarget();
-        //EnableClosestTarget();
-        //CheckTargetGone();
     }
-    /*void CheckTargetGone()
-    {
-        if (!visionMemory)
-            return;
-        if (Vector3.Distance(visionMemory.transform.position, transform.position) > range)
-        {
-            HideAllVisionTargets();
-            visionMemory = null;
-        }
-    }
-    void EnableClosestTarget()
-    {
-        float closest = 10000.0f;
-        int index = -1;
-        for (int i = 0; i < VisionTargets.Length; i++)
-        {
-            float distanceLength = Vector3.Distance(transform.position, VisionTargets[i].transform.position);
-            if (distanceLength <= range && distanceLength < closest)
-            {
-                closest = distanceLength;
-                index = i;
-                print(index);
-            }
-        }
-        if (index != -1)
-        {
-            HideAllVisionTargets();
-            VisionTargets[index].GetComponent<SpriteRenderer>().enabled = true;
-            visionMemory = VisionTargets[index].gameObject;
-        }
-    }*/
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "VisionTarget")
@@ -77,11 +47,11 @@ public class Example : MonoBehaviour
     {
         if (visionMemory.Count <= 0)
             return;
-        float closest = 10000.0f;
+        double closest = 10000.0f;
         GameObject close = visionMemory[0];
         foreach (GameObject g in visionMemory)
         {
-            float distanceLength = Vector3.Distance(transform.position, g.transform.position);
+            double distanceLength = Vector3.Distance(transform.position, g.transform.position);
             if (distanceLength < closest)
             {
                 closest = distanceLength;
@@ -89,7 +59,16 @@ public class Example : MonoBehaviour
             }
         }
         close.GetComponent<SpriteRenderer>().enabled = true;
-        
+        CurrentTarget = close;
+        LL.tvValidTarget = 1.0;
+        Camera cam = GetComponent<Camera>();
+        LL.txOffsetX = cam.pixelWidth / 2.0 
+            - cam.WorldToScreenPoint(close.transform.position).x;
+        LL.tyOffsetY = cam.WorldToScreenPoint(close.transform.position).y
+           - cam.pixelHeight / 2.0;
+        LL.tsSkewRotation = Vector3.Angle(close.transform.position - transform.position, transform.forward);
+        LL.taTargetArea = 10.0-closest;
+
     }
     /*private void OnTriggerEnter(Collider other)
     {
@@ -113,7 +92,8 @@ public class Example : MonoBehaviour
         for (int i = 0; i < VisionTargets.Length; i++)
         {
             VisionTargets[i].GetComponent<SpriteRenderer>().enabled = false;
-            
+            CurrentTarget = null;
+            LL.resetValues();
         }
     }
 }
