@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 13830466}
   - component: {fileID: 13830467}
   - component: {fileID: 13830468}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (16)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -2247,7 +2247,7 @@ GameObject:
   - component: {fileID: 194391160}
   - component: {fileID: 194391159}
   - component: {fileID: 194391161}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (17)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -2879,7 +2879,7 @@ GameObject:
   - component: {fileID: 246826109}
   - component: {fileID: 246826108}
   - component: {fileID: 246826110}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -3569,7 +3569,7 @@ GameObject:
   - component: {fileID: 299786003}
   - component: {fileID: 299786004}
   - component: {fileID: 299786005}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (20)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -3812,7 +3812,7 @@ GameObject:
   - component: {fileID: 321795023}
   - component: {fileID: 321795022}
   - component: {fileID: 321795024}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (16)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -4945,7 +4945,7 @@ GameObject:
   - component: {fileID: 381242832}
   - component: {fileID: 381242833}
   - component: {fileID: 381242834}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (16)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -6689,7 +6689,7 @@ GameObject:
   - component: {fileID: 484131995}
   - component: {fileID: 484131994}
   - component: {fileID: 484131996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (18)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -8476,7 +8476,7 @@ GameObject:
   - component: {fileID: 585089986}
   - component: {fileID: 585089987}
   - component: {fileID: 585089988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (17)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -9524,7 +9524,7 @@ GameObject:
   - component: {fileID: 656271970}
   - component: {fileID: 656271971}
   - component: {fileID: 656271972}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (5)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -10475,7 +10475,7 @@ GameObject:
   - component: {fileID: 716569918}
   - component: {fileID: 716569919}
   - component: {fileID: 716569920}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (6)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -11117,7 +11117,7 @@ GameObject:
   - component: {fileID: 750169555}
   - component: {fileID: 750169556}
   - component: {fileID: 750169557}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (10)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -12771,7 +12771,7 @@ GameObject:
   - component: {fileID: 912786946}
   - component: {fileID: 912786947}
   - component: {fileID: 912786948}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (11)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -13195,7 +13195,7 @@ GameObject:
   - component: {fileID: 944399017}
   - component: {fileID: 944399018}
   - component: {fileID: 944399019}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (2)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -13323,7 +13323,7 @@ GameObject:
   - component: {fileID: 947894100}
   - component: {fileID: 947894101}
   - component: {fileID: 947894102}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (8)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -13527,7 +13527,7 @@ GameObject:
   - component: {fileID: 963787008}
   - component: {fileID: 963787009}
   - component: {fileID: 963787010}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (18)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -14784,7 +14784,7 @@ GameObject:
   - component: {fileID: 1022134704}
   - component: {fileID: 1022134705}
   - component: {fileID: 1022134706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (7)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -17369,7 +17369,7 @@ GameObject:
   - component: {fileID: 1174119220}
   - component: {fileID: 1174119219}
   - component: {fileID: 1174119221}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (19)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -17604,7 +17604,7 @@ GameObject:
   - component: {fileID: 1198861253}
   - component: {fileID: 1198861254}
   - component: {fileID: 1198861255}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (12)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -18477,7 +18477,7 @@ GameObject:
   - component: {fileID: 1234879386}
   - component: {fileID: 1234879387}
   - component: {fileID: 1234879388}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (13)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -18668,7 +18668,7 @@ GameObject:
   - component: {fileID: 1252486014}
   - component: {fileID: 1252486015}
   - component: {fileID: 1252486016}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (14)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -18982,7 +18982,7 @@ GameObject:
   - component: {fileID: 1278913036}
   - component: {fileID: 1278913037}
   - component: {fileID: 1278913038}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (17)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -19120,7 +19120,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 311
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -19378,7 +19378,7 @@ GameObject:
   - component: {fileID: 1296199033}
   - component: {fileID: 1296199034}
   - component: {fileID: 1296199035}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (18)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -19865,7 +19865,7 @@ GameObject:
   - component: {fileID: 1350092686}
   - component: {fileID: 1350092687}
   - component: {fileID: 1350092688}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (21)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -21928,7 +21928,7 @@ GameObject:
   - component: {fileID: 1468671578}
   - component: {fileID: 1468671577}
   - component: {fileID: 1468671579}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (1)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -24058,7 +24058,7 @@ GameObject:
   - component: {fileID: 1621004210}
   - component: {fileID: 1621004211}
   - component: {fileID: 1621004212}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (19)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -25886,7 +25886,7 @@ GameObject:
   - component: {fileID: 1687624280}
   - component: {fileID: 1687624281}
   - component: {fileID: 1687624282}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (19)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -26538,7 +26538,7 @@ GameObject:
   - component: {fileID: 1709406505}
   - component: {fileID: 1709406506}
   - component: {fileID: 1709406507}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (4)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -28894,7 +28894,7 @@ GameObject:
   - component: {fileID: 1906037837}
   - component: {fileID: 1906037838}
   - component: {fileID: 1906037839}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (21)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -29429,7 +29429,7 @@ GameObject:
   - component: {fileID: 1948303163}
   - component: {fileID: 1948303164}
   - component: {fileID: 1948303165}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (20)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -30468,7 +30468,7 @@ GameObject:
   - component: {fileID: 2004171144}
   - component: {fileID: 2004171145}
   - component: {fileID: 2004171146}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (3)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -32043,7 +32043,7 @@ GameObject:
   - component: {fileID: 2118090374}
   - component: {fileID: 2118090375}
   - component: {fileID: 2118090376}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (15)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -32408,7 +32408,7 @@ GameObject:
   - component: {fileID: 2142866867}
   - component: {fileID: 2142866868}
   - component: {fileID: 2142866869}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: whitesquare (9)
   m_TagString: VisionTarget
   m_Icon: {fileID: 0}
@@ -32718,6 +32718,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -11
       objectReference: {fileID: 0}
+    - target: {fileID: 2809969056927929320, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
+    - target: {fileID: 3580108215793082685, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
+    - target: {fileID: 7024259953898226107, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
+    - target: {fileID: 7412905551752205982, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
+    - target: {fileID: 8096030775898856126, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
+    - target: {fileID: 8859814041654429821, guid: 790b3120f515b144cab4798efd4133ce,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 59b20ced744c6fd44b9374a2e2eec9e7,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 6409943756395167104, guid: 790b3120f515b144cab4798efd4133ce, type: 3}
     - {fileID: 8819741922852351718, guid: 790b3120f515b144cab4798efd4133ce, type: 3}

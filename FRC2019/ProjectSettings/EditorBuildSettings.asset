@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/FRC2019.unity
+    guid: 7fe3a66802e8384419605c886d51eb18
   m_configObjects: {}

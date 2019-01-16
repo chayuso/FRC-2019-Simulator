@@ -23,7 +23,7 @@ public class Movement : MonoBehaviour
 
     private Rigidbody rb;
 
-    float minForce = 0.05f;
+    public float minForce = 0.05f;
     float minForwardForce = 0.375f;
     float searchForce = 0.75f;
     float distanceRange = 1f;
@@ -115,9 +115,13 @@ public class Movement : MonoBehaviour
         }
         if (Input.GetButton("XBOX_X"))
         {
-            seekPositioning();
+            //seekPositioning();
             //seekTargetRange();
-            //seekTarget();
+            seekTarget();
+        }
+        else if (Input.GetButton("XBOX_Y"))
+        {
+            seekTargetRange();
         }
         else
         {
@@ -176,11 +180,11 @@ public class Movement : MonoBehaviour
             steering_adjust = 0.0f;
             if (LL.txOffsetX > 1.0)
             {
-                steering_adjust = 0.1f * (float)heading_error - (float)minForce;
+                steering_adjust = 0.03f * heading_error + minForce;
             }
             else if (LL.txOffsetX < 1.0)
             {
-                steering_adjust = 0.1f * (float)heading_error + (float)minForce;
+                steering_adjust = 0.03f * heading_error - minForce;
             }
             distance_adjust = KpDistance * distance_error + minForwardForce;
             print("Adjusting");
@@ -215,7 +219,6 @@ public class Movement : MonoBehaviour
                 steering_adjust = -searchForce - minForce;
             else if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") < 0)
                 steering_adjust = searchForce + minForce;
-            print("Seeking");
         }
         else
         {
@@ -226,13 +229,12 @@ public class Movement : MonoBehaviour
             steering_adjust = 0.0f;
             if (LL.txOffsetX > 1.0)
             {
-                steering_adjust = 0.1 * heading_error - minForce;
+                steering_adjust = 0.03f * heading_error + minForce;
             }
             else if (LL.txOffsetX < 1.0)
             {
-                steering_adjust = 0.1 * heading_error + minForce;
+                steering_adjust = 0.03f * heading_error - minForce;
             }
-            print("Adjusting");
         }
 
         setMotorSpeedLeft(-(float)steering_adjust);
