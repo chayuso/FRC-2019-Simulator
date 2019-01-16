@@ -108,6 +108,5 @@ public class Movement : MonoBehaviour
         MoveLeftSide(LeftVerticalJoy);
         MoveRightSide(RightVerticalJoy);
         JoystickInputs();
-        print(rb.velocity.magnitude);
     }
 }
