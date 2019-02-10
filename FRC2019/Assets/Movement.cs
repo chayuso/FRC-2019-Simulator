@@ -24,9 +24,16 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
 
     public float minForce = 0.05f;
-    float minForwardForce = 0.375f;
     float searchForce = 0.75f;
     float distanceRange = 1f;
+    bool aligning = false;
+    double degreeOffset = 0;
+    double distanceOffset = 0;
+    public double yaw = 0;
+    double lastYaw = 0;
+    public double multiplier = 0;
+    Vector3 start;
+    double encoderStartValue = 0;
 
     void ToggleSandStorm()
     {
@@ -117,32 +124,36 @@ public class Movement : MonoBehaviour
         {
             //seekPositioning();
             //seekTargetRange();
-            seekTarget();
-        }
-        else if (Input.GetButton("XBOX_Y"))
-        {
-            seekTargetRange();
-        }
-        else
-        {
-            float LeftVerticalJoy = Input.GetAxis("Left_Vertical_Joystick");
-            float RightVerticalJoy = Input.GetAxis("Right_Vertical_Joystick");
-
-            if (Input.GetButton("XBOX_B"))
+            if (!aligning)
             {
-                setMotorSpeedLeft(LeftVerticalJoy);
-                setMotorSpeedRight(LeftVerticalJoy);
+                aligning = true;
+                degreeOffset = yaw - LL.txOffsetX;
+                distanceOffset = Vector3.Distance(transform.position, FrontCam.GetComponent<Example>().CurrentTarget.transform.position);// EstimateDistance();
+                start = transform.position;
             }
             else
             {
-                setMotorSpeedLeft(LeftVerticalJoy);
-                setMotorSpeedRight(RightVerticalJoy);
+                double[] speedValues = seekTarget(degreeOffset, distanceOffset, encoderStartValue);
+                setMotorSpeedLeft((float)speedValues[0]);
+                setMotorSpeedRight((float)speedValues[1]);
             }
+        }
+        else
+        {
+            aligning = false;
+            float LeftVerticalJoy = Input.GetAxis("Left_Vertical_Joystick");
+            float RightVerticalJoy = Input.GetAxis("CONTROLLER_RIGHT_STICK_HORIZONTAL");
+            setMotorSpeedLeft(LeftVerticalJoy);
+            setMotorSpeedRight(LeftVerticalJoy);
+            setMotorSpeedLeft(RightVerticalJoy);
+            setMotorSpeedRight(-RightVerticalJoy);
         }
 
     }
     float EstimateDistance()
     {
+        if (LL.tvValidTarget == 0.0)
+            return 0.0f;
         float h1 = transform.position.y;
         float h2 = FrontCam.GetComponent<Example>().CurrentTarget.transform.position.y;
         float a1 = Mathf.Abs(360 - transform.localEulerAngles.x);
@@ -150,99 +161,67 @@ public class Movement : MonoBehaviour
         float d = (h2 - h1) / (float)(Mathf.Tan(Mathf.Deg2Rad * (a1 + a2)));
         return d;
     }
-
-    void seekPositioning()
+    float getDistanceTraveled(double encoderStartValue)
     {
-        float KpDistance = -0.3f;
-        float steering_adjust = 0.0f;
-        float distance_adjust = 0.0f;
-        if (LL.tvValidTarget == 0.0)
-        {
-            // We don't see the target, seek for the target by spinning in place at a safe speed.
-            if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") > 0)
-                steering_adjust = -searchForce - minForce;
-            else if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") < 0)
-                steering_adjust = searchForce + minForce;
-            print("Seeking");
-        }
-        else
-        {
-            // We do see the target, execute aiming code
-            //double heading_error = LL.txOffsetX;
-            //steering_adjust = 0.3 * LL.txOffsetX;
-            float heading_error = (float)LL.txOffsetX;
-            float distance_error = distanceRange - EstimateDistance();
-            minForwardForce = Mathf.Abs(minForwardForce);
-            if (distance_error > 0)
-            {
-                minForwardForce = -Mathf.Abs(minForwardForce);
-            }
-            steering_adjust = 0.0f;
-            if (LL.txOffsetX > 1.0)
-            {
-                steering_adjust = 0.03f * heading_error + minForce;
-            }
-            else if (LL.txOffsetX < 1.0)
-            {
-                steering_adjust = 0.03f * heading_error - minForce;
-            }
-            distance_adjust = KpDistance * distance_error + minForwardForce;
-            print("Adjusting");
-        }
-
-        setMotorSpeedLeft(-(float)steering_adjust+ distance_adjust);
-        setMotorSpeedRight((float)steering_adjust+ distance_adjust);
+        return Vector3.Distance(start, transform.position);
     }
-    void seekTargetRange()
+    double[] seekTargetRange(double distanceOffset,double encoderStartValue)
     {
-        if (LL.tvValidTarget == 0.0)
-            return;
-        float KpDistance = -0.3f;  // Proportional control constant for distance
-        float distance_error = distanceRange - EstimateDistance();
-        minForwardForce = Mathf.Abs(minForwardForce);
-        if (distance_error > 0)
+        float KpDistance = 1f;  // Proportional control constant for distance
+        float distance_error = (float)distanceOffset -.2f - getDistanceTraveled(encoderStartValue);
+        float minForwardForce = 0.1f;
+        if (distance_error < 0)
         {
-            minForwardForce = -Mathf.Abs(minForwardForce);
+            minForwardForce = -0.1f;
         }
-        float driving_adjust = KpDistance * distance_error+ minForwardForce;
-        print(driving_adjust);
-        setMotorSpeedLeft(driving_adjust);
-        setMotorSpeedRight(driving_adjust);
+        float driving_adjust = KpDistance * distance_error + minForwardForce;
+        return new double[] { driving_adjust, driving_adjust };
     }
-    void seekTarget()
+    double[] seekTarget(double degreeOffset, double distanceOffset, double encoderStartValue)
     {
-        double steering_adjust = 0.0f;
-        if (LL.tvValidTarget == 0.0)
-        {
-            // We don't see the target, seek for the target by spinning in place at a safe speed.
-            if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") > 0)
-                steering_adjust = -searchForce - minForce;
-            else if (Input.GetAxis("CONTROLLER_LEFT_STICK_HORIZONTAL") < 0)
-                steering_adjust = searchForce + minForce;
-        }
-        else
-        {
-            // We do see the target, execute aiming code
-            //double heading_error = LL.txOffsetX;
-            //steering_adjust = 0.3 * LL.txOffsetX;
-            float heading_error = (float)LL.txOffsetX;
-            steering_adjust = 0.0f;
-            if (LL.txOffsetX > 1.0)
-            {
-                steering_adjust = 0.03f * heading_error + minForce;
-            }
-            else if (LL.txOffsetX < 1.0)
-            {
-                steering_adjust = 0.03f * heading_error - minForce;
-            }
-        }
 
-        setMotorSpeedLeft(-(float)steering_adjust);
-        setMotorSpeedRight((float)steering_adjust);
+        double leftOut = seekTargetRange(distanceOffset,encoderStartValue)[0]+PigeonTurn(degreeOffset)[0];
+        double rightOut = seekTargetRange(distanceOffset, encoderStartValue)[1] + PigeonTurn(degreeOffset)[1];
+        double[] values = new double[] {  leftOut , rightOut };
+        return values;
+    }
+    public double[] PigeonTurn(double degrees)
+    {
+        double KpAim = 0.1f;
+        double AimMinCmd = 0.4f;
+        //90 - 0
+        //-90
+        double aim_error = (degrees - yaw);
+        double steering_adjust = 0;
+
+        if (aim_error > 0)
+        {
+            if (aim_error < 1) AimMinCmd = 0.025;
+            steering_adjust = (KpAim * aim_error) + AimMinCmd;
+        }
+        else if (aim_error < 0)
+        {
+            if (aim_error > -1) AimMinCmd = 0.025;
+            steering_adjust = (KpAim * aim_error) - AimMinCmd;
+        }
+        double leftOut = steering_adjust;
+        double rightOut = -steering_adjust;
+        double[] output = { leftOut, rightOut };
+        return output;
     }
     // Update is called once per frame
     void Update()
     {
+        if (lastYaw - (360 * multiplier) > 270 && transform.eulerAngles.y >= 0 && transform.eulerAngles.y <= 90)
+        {
+            ++multiplier;
+        }
+        if (lastYaw - (360 * multiplier) < 90 && transform.eulerAngles.y >= 270 && transform.eulerAngles.y <= 360)
+        {
+            --multiplier;
+        }
+        yaw = transform.eulerAngles.y + (360 * multiplier);
+        lastYaw = yaw;
         float moveLeftVertical = Input.GetAxis("WSVertical");
         float moveRightVertical = Input.GetAxis("ArrowsVertical");
 

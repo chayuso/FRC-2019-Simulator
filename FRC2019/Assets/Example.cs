@@ -62,8 +62,16 @@ public class Example : MonoBehaviour
         CurrentTarget = close;
         LL.tvValidTarget = 1.0;
         Camera cam = GetComponent<Camera>();
-        LL.txOffsetX = cam.pixelWidth / 2.0 
-            - cam.WorldToScreenPoint(close.transform.position).x;
+        double pixelOffset = cam.pixelWidth / 2.0 
+           - cam.WorldToScreenPoint(close.transform.position).x;
+        float angleBetween = 0.0f;
+        angleBetween = Vector3.Angle(transform.forward, close.transform.position - transform.position);
+        if (pixelOffset<0)
+        {
+            angleBetween = -angleBetween;
+        }
+        LL.txOffsetX = (double)angleBetween;
+        //LL.txOffsetX = pixelOffset;
         LL.tyOffsetY = cam.WorldToScreenPoint(close.transform.position).y
            - cam.pixelHeight / 2.0;
         LL.tsSkewRotation = Vector3.Angle(close.transform.position - transform.position, transform.forward);
